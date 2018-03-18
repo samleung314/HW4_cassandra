@@ -43,8 +43,8 @@ app.get('/retrieve', multipart.single('contents'), function (req, res) {
   client.execute(query, params, { prepare: true }, function (err, result) {
     if (result.rows.length > 0) {
       image = result.rows[0].path;
-      console.log("RESULT ARRAY: " + path);
-      console.log("RESULT: " + path.toString());
+      console.log("RESULT ARRAY: " + image);
+      console.log("RESULT: " + image.toString());
     } else {
       console.log("No results");
     }
