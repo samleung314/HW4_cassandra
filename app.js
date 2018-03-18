@@ -22,9 +22,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/deposit', multipart.single('contents'), function (req, res) {
   // Use query markers (?) and parameters
-  const query = 'INSERT INTO imgs (filename, contents) VALUES (?,?)';
+  const query = 'INSERT INTO imgs (filename, contents, path) VALUES (?,?,?)';
   var fileBin = fs.readFileSync(req.file.path);
-  const params = [req.body.filename, fileBin];
+  const params = [req.body.filename, fileBin, req.file.path];
   // Set the prepare flag in the query options
 
   client.execute(query, params, { prepare: true })
@@ -36,26 +36,21 @@ app.get('/retrieve', multipart.single('contents'), function (req, res) {
   console.log("File: " + req.query.filename);
 
   // Use query markers (?) and parameters
-  const query = 'SELECT contents FROM imgs WHERE filename=?';
+  const query = 'SELECT path FROM imgs WHERE filename=?';
   const params = [req.query.filename];
   // Set the prepare flag in the query options
   var image;
   client.execute(query, params, { prepare: true }, function (err, result) {
-    if(err) console.log("ERROR: " + err);
-
-    res.writeHead(200, {
-      'Content-Type': 'image/jpeg'
-    });
-    console.log(result.toString());
-    res.write(result.toString());
-    res.end();
+    console.log("RESULT ARRAY: "+ result[0]);
+    console.log("RESULT: "+ result);
   });
 
-  
-  // var readStream = fs.createReadStream();
-  // // We replaced all the event handlers with a simple call to readStream.pipe()
-  // readStream.pipe(res);
-
+  res.writeHead(200, {
+    'Content-Type': 'image/jpeg',
+  });
+  var readStream = fs.createReadStream(result);
+  // We replaced all the event handlers with a simple call to readStream.pipe()
+  readStream.pipe(res);
 })
 
 module.exports = app;
