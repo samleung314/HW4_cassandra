@@ -47,7 +47,7 @@ app.get('/retrieve', multipart.single('contents'), function (req, res) {
   });
 
   res.writeHead(200, {
-    'Content-Type': 'image/jpeg',
+    'Content-Type': 'image/jpeg'
   });
   var readStream = fs.createReadStream(image);
   // We replaced all the event handlers with a simple call to readStream.pipe()
