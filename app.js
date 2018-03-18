@@ -11,7 +11,7 @@ var client = new cassandra.Client({ contactPoints: ['127.0.0.1'], keyspace: 'hw4
 
 // multer
 var multer  = require('multer');
-var multipart = multer();
+var multipart = multer({dest: 'uploads/'});
 
 //create express app
 var app = express();
@@ -20,10 +20,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/deposit', multipart.single('contents'), function (req, res) {
-  console.log(req);
   // Use query markers (?) and parameters
   const query = 'INSERT INTO imgs (filename, contents) VALUES (?,?)';
-  const params = [req.body.filename, req.file];
+  var fileBin = fs.readFileSync(req.file.path);
+  const params = [req.body.filename, fileBin];
   // Set the prepare flag in the query options
   console.log('EXECUTE');
   client.execute(query, params, { prepare: true })
