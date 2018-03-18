@@ -28,7 +28,7 @@ app.post('/deposit', multipart.single('contents'), function (req, res) {
   var fileBin = fs.readFileSync(req.file.path);
   const params = [req.body.filename, fileBin];
   // Set the prepare flag in the query options
-  last = Object.assign({}, fileBin);
+  last = Object.assign({}, params[1]);
   client.execute(query, params, { prepare: true })
     .then(result => console.log('Uploaded ' + params[0]));
   res.sendStatus(200);
@@ -38,7 +38,9 @@ app.get('/retrieve', function (req, res) {
   res.writeHead(200, {
     'Content-Type': 'image/jpeg',
   });
-  res.sendfile(last);
+  var readStream = fs.createReadStream(last);
+    // We replaced all the event handlers with a simple call to readStream.pipe()
+    readStream.pipe(res);
 })
 
 module.exports = app;
