@@ -24,7 +24,7 @@ app.post('/deposit', multipart.single('contents'), function (req, res) {
   // Use query markers (?) and parameters
   const query = 'INSERT INTO imgs (filename, contents) VALUES (?,?)';
   var fileBin = fs.readFileSync(req.file.path);
-  const params = [req.body.filename, fileBin];
+  const params = [req.body.filename, req.file.path];
   // Set the prepare flag in the query options
 
   client.execute(query, params, { prepare: true })
@@ -39,15 +39,17 @@ app.get('/retrieve', multipart.single('contents'), function (req, res) {
   const query = 'SELECT contents FROM imgs WHERE filename=?';
   const params = [req.query.filename];
   // Set the prepare flag in the query options
-  client.execute(query, params, { prepare: true })
-    .then(result => console.log('Selected ' + params[0]));
-  
+  var image;
+  client.execute(query, params, { prepare: true }, function (err, result) {
+    image = result[0];
+  });
+
   res.writeHead(200, {
     'Content-Type': 'image/jpeg',
   });
-  var readStream = fs.createReadStream(last.toString());
-    // We replaced all the event handlers with a simple call to readStream.pipe()
-    readStream.pipe(res);
+  var readStream = fs.createReadStream(image.toString());
+  // We replaced all the event handlers with a simple call to readStream.pipe()
+  readStream.pipe(res);
 })
 
 module.exports = app;
