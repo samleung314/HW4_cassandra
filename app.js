@@ -19,7 +19,7 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.post('/deposit', upload.single('contents'), function (req, res) {
+app.post('/deposit', multipart.single('contents'), function (req, res) {
   console.log(req);
   // Use query markers (?) and parameters
   const query = 'INSERT INTO imgs (filename, contents) VALUES (?,?)';
