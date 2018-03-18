@@ -41,14 +41,15 @@ app.get('/retrieve', multipart.single('contents'), function (req, res) {
   // Set the prepare flag in the query options
   var image;
   client.execute(query, params, { prepare: true }, function (err, result) {
-    console.log("RESULT ARRAY: "+ result[0]);
+    image = result.row[0].path;
+    console.log("RESULT ARRAY: "+ result.row[0].path);
     console.log("RESULT: "+ result);
   });
 
   res.writeHead(200, {
     'Content-Type': 'image/jpeg',
   });
-  var readStream = fs.createReadStream(result);
+  var readStream = fs.createReadStream(image);
   // We replaced all the event handlers with a simple call to readStream.pipe()
   readStream.pipe(res);
 })
