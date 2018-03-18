@@ -1,0 +1,24 @@
+{
+  "name": "hw4_cassandra",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samleung314/HW4_cassandra.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/samleung314/HW4_cassandra/issues"
+  },
+  "homepage": "https://github.com/samleung314/HW4_cassandra#readme",
+  "dependencies": {
+    "async": "^2.6.0",
+    "cassandra-driver": "^3.4.1",
+    "express": "^4.16.3"
+  }
+}
