@@ -41,9 +41,13 @@ app.get('/retrieve', multipart.single('contents'), function (req, res) {
   // Set the prepare flag in the query options
   var image;
   client.execute(query, params, { prepare: true }, function (err, result) {
-    image = result.row[0].path;
-    console.log("RESULT ARRAY: "+ result.row[0].path);
-    console.log("RESULT: "+ result);
+    if (result.rows.length > 0) {
+      image = result.rows[0].path;
+      console.log("RESULT ARRAY: " + path);
+      console.log("RESULT: " + path.toString());
+    } else {
+      console.log("No results");
+    }
   });
 
   res.writeHead(200, {
