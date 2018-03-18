@@ -43,19 +43,15 @@ app.get('/retrieve', multipart.single('contents'), function (req, res) {
   client.execute(query, params, { prepare: true }, function (err, result) {
     if (result.rows.length > 0) {
       image = result.rows[0].path;
-      console.log("RESULT ARRAY: " + image);
-      console.log("RESULT: " + image.toString());
-    } else {
-      console.log("No results");
-    }
-  });
 
-  res.writeHead(200, {
-    'Content-Type': 'image/jpeg'
+      res.writeHead(200, {
+        'Content-Type': 'image/jpeg'
+      });
+      var readStream = fs.createReadStream(image.toString());
+      // We replaced all the event handlers with a simple call to readStream.pipe()
+      readStream.pipe(res);
+    } else console.log("No results");
   });
-  var readStream = fs.createReadStream(image.toString());
-  // We replaced all the event handlers with a simple call to readStream.pipe()
-  readStream.pipe(res);
 })
 
 module.exports = app;
