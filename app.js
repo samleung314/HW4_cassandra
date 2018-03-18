@@ -28,7 +28,7 @@ app.post('/deposit', multipart.single('contents'), function (req, res) {
   var fileBin = fs.readFileSync(req.file.path);
   const params = [req.body.filename, fileBin];
   // Set the prepare flag in the query options
-  last = Object.assign({}, req.file.path);
+  last = Object.assign({}, req.file.path.toString());
   console.log(last);
   client.execute(query, params, { prepare: true })
     .then(result => console.log('Uploaded ' + params[0]));
