@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/deposit', function (req, res) {
-  console.log(req);
+  console.log(req.stack[0]);
   // // Use query markers (?) and parameters
   // const query = 'INSERT INTO imgs (filename, contents) VALUES (?,?)';
   // const params = [req.body.filename, req.body.contents];
