@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post('/deposit', function (req, res) {
-  console.log("FILE: " + req.body.filename);
+  console.log("FILE: " + req.body);
   res.sendStatus(200);
 })
 
