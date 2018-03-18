@@ -11,8 +11,8 @@ var async = require('async');
 var client = new cassandra.Client({ contactPoints: ['127.0.0.1'], keyspace: 'hw4' });
 
 // multer
-var multer  = require('multer');
-var multipart = multer({dest: 'uploads/'});
+var multer = require('multer');
+var multipart = multer({ dest: 'uploads/' });
 
 //create express app
 var app = express();
@@ -26,14 +26,16 @@ app.post('/deposit', multipart.single('contents'), function (req, res) {
   var fileBin = fs.readFileSync(req.file.path);
   const params = [req.body.filename, fileBin];
   // Set the prepare flag in the query options
-  console.log('EXECUTE');
   client.execute(query, params, { prepare: true })
     .then(result => console.log('Row updated on the cluster'));
-    res.sendStatus(200);
+  res.sendStatus(200);
 })
 
 app.get('/retrieve', function (req, res) {
-  res.sendStatus(200);
+  res.writeHead(200, {
+    'Content-Type': 'image/jpeg',
+  });
+  res.end();
 })
 
 module.exports = app;
