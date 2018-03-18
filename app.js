@@ -35,9 +35,9 @@ app.post('/deposit', multipart.single('contents'), function (req, res) {
   res.sendStatus(200);
 })
 
-app.get('/retrieve', function (req, res) {
+app.get('/retrieve', multipart.single('contents'), function (req, res) {
   console.log(req);
-  console.log("BODY: " + req.body);
+  console.log("BODY: " + req.body.filename);
   res.writeHead(200, {
     'Content-Type': 'image/jpeg',
   });
