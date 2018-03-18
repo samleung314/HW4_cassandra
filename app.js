@@ -7,7 +7,7 @@ var cassandra = require('cassandra-driver');
 var async = require('async');
 
 //Connect to the cluster
-var client = new cassandra.Client({ contactPoints: ['127.0.0.1'], keyspace: 'hw3' });
+var client = new cassandra.Client({ contactPoints: ['127.0.0.1'], keyspace: 'imgs' });
 
 //create express app
 var app = express();
@@ -22,6 +22,7 @@ app.post('/deposit', function (req, res) {
   // Set the prepare flag in the query options
   client.execute(query, params, { prepare: true })
     .then(result => console.log('Row updated on the cluster'));
+
 })
 
 app.get('/retrieve', function (req, res) {
