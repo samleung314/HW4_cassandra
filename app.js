@@ -42,18 +42,18 @@ app.get('/retrieve', multipart.single('contents'), function (req, res) {
   var image;
   client.execute(query, params, { prepare: true }, function (err, result) {
     if(err) console.log("ERROR: " + err);
-    image = result[0];
-    console.log("RESULT " + result);
+
+    res.writeHead(200, {
+      'Content-Type': 'image/jpeg'
+    });
+    res.send(result);
   });
 
-  res.writeHead(200, {
-    'Content-Type': 'image/jpeg',
-  });
+  
   // var readStream = fs.createReadStream();
   // // We replaced all the event handlers with a simple call to readStream.pipe()
   // readStream.pipe(res);
 
-  res.send(image);
 })
 
 module.exports = app;
