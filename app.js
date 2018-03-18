@@ -33,7 +33,7 @@ app.post('/deposit', multipart.single('contents'), function (req, res) {
 })
 
 app.get('/retrieve', multipart.single('contents'), function (req, res) {
-  console.log("File:" + req.query.filename);
+  console.log("File: " + req.query.filename);
 
   // Use query markers (?) and parameters
   const query = 'SELECT contents FROM imgs WHERE filename=?';
@@ -41,15 +41,16 @@ app.get('/retrieve', multipart.single('contents'), function (req, res) {
   // Set the prepare flag in the query options
   var image;
   client.execute(query, params, { prepare: true }, function (err, result) {
+    image = result[0];
     console.log(result[0]);
   });
 
   res.writeHead(200, {
     'Content-Type': 'image/jpeg',
   });
-  var readStream = fs.createReadStream(last.toString());
+  //var readStream = fs.createReadStream(last.toString());
   // We replaced all the event handlers with a simple call to readStream.pipe()
-  readStream.pipe(res);
+  image.pipe(res);
 })
 
 module.exports = app;
