@@ -38,7 +38,7 @@ app.get('/retrieve', function (req, res) {
   res.writeHead(200, {
     'Content-Type': 'image/jpeg',
   });
-  res.end(last, 'binary');
+  res.sendfile(last);
 })
 
 module.exports = app;
