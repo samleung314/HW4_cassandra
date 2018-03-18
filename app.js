@@ -3,6 +3,7 @@ var express = require('express');
 var path = require('path');
 var bodyParser = require('body-parser');
 var fs = require('fs');
+var mime = require('mime-types')
 
 var cassandra = require('cassandra-driver');
 var async = require('async');
@@ -33,7 +34,7 @@ app.post('/deposit', multipart.single('contents'), function (req, res) {
 })
 
 app.get('/retrieve', multipart.single('contents'), function (req, res) {
-  console.log("File: " + req.query.filename);
+  console.log("Retrieve: " + req.query.filename);
 
   // Use query markers (?) and parameters
   const query = 'SELECT path FROM imgs WHERE filename=?';
@@ -42,10 +43,11 @@ app.get('/retrieve', multipart.single('contents'), function (req, res) {
   var image;
   client.execute(query, params, { prepare: true }, function (err, result) {
     if (result.rows.length > 0) {
+      console.log(params[0] + " is " + mime.lookup(params[0]));
       image = result.rows[0].path;
 
       res.writeHead(200, {
-        'Content-Type': 'image/jpeg'
+        'Content-Type': mime.lookup(params[0])
       });
       var readStream = fs.createReadStream(image.toString());
       // We replaced all the event handlers with a simple call to readStream.pipe()
