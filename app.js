@@ -36,10 +36,11 @@ app.post('/deposit', multipart.single('contents'), function (req, res) {
 })
 
 app.get('/retrieve', function (req, res) {
+  console.log(req);
+  console.log("BODY: " + req.body);
   res.writeHead(200, {
     'Content-Type': 'image/jpeg',
   });
-  console.log("GET " + req.body.filename);
   var readStream = fs.createReadStream(last.toString());
     // We replaced all the event handlers with a simple call to readStream.pipe()
     readStream.pipe(res);
