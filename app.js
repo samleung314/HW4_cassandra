@@ -39,7 +39,7 @@ app.get('/retrieve', function (req, res) {
   res.writeHead(200, {
     'Content-Type': 'image/jpeg',
   });
-  console.log("RETRE " + last);
+  console.log("GET " + req.body.filename);
   var readStream = fs.createReadStream(last.toString());
     // We replaced all the event handlers with a simple call to readStream.pipe()
     readStream.pipe(res);
