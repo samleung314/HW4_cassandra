@@ -46,7 +46,8 @@ app.get('/retrieve', multipart.single('contents'), function (req, res) {
     res.writeHead(200, {
       'Content-Type': 'image/jpeg'
     });
-    res.send(result);
+    res.write(result);
+    res.end();
   });
 
   
